@@ -12,6 +12,11 @@ router.get('/', async (req, res)=>{
     res.send(appointments);
 });
 
+router.get('/:id', async (req, res) =>{
+    const appointment = await AppointmentController.getAppointmentById(req.params.id);
+    res.send(appointment);
+});
+
 router.get('/usr/:userId', async (req, res)=>{
     const appointments = await AppointmentController.getAllAppointmentsByPacId(req.params.userId);
     res.send(appointments);

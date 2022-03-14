@@ -4,6 +4,13 @@ const mongoose = require('mongoose');
 
 const { appointmentHelper } = require('../helper/AppointmentHelper');
 
+async function getAppointmentById(id){
+    let o_id = mongoose.Types.ObjectId(id);
+    let filter = {"_id": o_id};
+    const appointment = await Appointment.findOne(filter);
+    return appointment;
+}
+
 async function getAllAppointments(){
     const appointment_list = await Appointment.find();
     var apps = [];
@@ -81,5 +88,5 @@ async function deleteAppointment(id){
     }
 }
 
-module.exports= {getAllAppointments, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
+module.exports= {getAllAppointments, getAppointmentById, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
     updateAppointment, deleteAppointment};
