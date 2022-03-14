@@ -1,14 +1,23 @@
 // Model
 const User = require('../model/User');
 
-function getAllUsers() {
-    var userMap = {};
-    User.find({}, (err, users) => {
-        users.forEach(user => {
-            userMap[user._id] = user;
-        });
-    });
-    return userMap;
+async function getAllUsers() {
+    return await User.find();
 }
 
-module.exports = { getAllUsers };
+async function createUser(userData) {
+    const newUser = new User({
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        password: userData.password,
+        role: userData.role
+    });
+    newUser.save((err) => {
+        if(err) console.error(err);
+    });
+    const createdUser = await User.find({name: userData.email})
+    return createdUser;
+}
+
+module.exports = { getAllUsers, createUser };
