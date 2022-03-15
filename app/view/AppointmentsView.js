@@ -7,12 +7,12 @@ router.use(express.json());
 const AppointmentController = require('../controller/AppointmentController');
 
 //CRUD appointment router
-router.get('/', (req, res)=>{
+router.get('/', async (req, res)=>{
     const appointments = await AppointmentController.getAllAppointments();
     res.send(appointments);
 });
 
-router.post('/', (req, res) =>{
+router.post('/', async (req, res) =>{
     const appointment = await AppointmentController.createAppointment(req.body);
     res.send(appointment);
 });
