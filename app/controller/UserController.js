@@ -1,8 +1,19 @@
+const mongoose = require('mongoose');
 // Model
 const User = require('../model/User');
 
 async function getAllUsers() {
     return await User.find();
+}
+
+async function getUserById(userId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(userId);
+        const user = await User.findById(o_id).exec();
+        return user;
+    } catch (error) {
+        return;
+    }
 }
 
 async function createUser(userData) {
@@ -24,4 +35,4 @@ async function createUser(userData) {
     return createdUser;
 }
 
-module.exports = { getAllUsers, createUser };
+module.exports = { getAllUsers, getUserById, createUser };
