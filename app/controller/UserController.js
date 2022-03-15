@@ -9,11 +9,16 @@ async function createUser(userData) {
     const newUser = new User(userData);
 
     let validationError = newUser.validateSync();
-    if(validationError) return validationError;
+    if(validationError) {
+        return { "validationError" : validationError };
+    }
 
-    await newUser.save((err) => {
-        if(err) console.error(err);
-    });
+    let saveError = undefined;
+    await newUser.save()
+    .catch((err) => saveError = err);
+    if(saveError) {
+        return { "error": "El email ya existe" };
+    }
 
     const createdUser = await User.findOne({email: userData.email}).exec();
     return createdUser;
