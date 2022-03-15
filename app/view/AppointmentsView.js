@@ -17,4 +17,8 @@ router.post('/', async (req, res) =>{
     res.send(appointment);
 });
 
+router.delete('/:userId', async (req, res) =>{
+    const deleteAppointment= await AppointmentController.deleteAppointment(req.params.userId);
+    res.send(deleteAppointment)
+})
 module.exports = router;

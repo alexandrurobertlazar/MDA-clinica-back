@@ -1,5 +1,6 @@
 //Model
 const Appointment = require('../model/Appointment');
+const mongoose = require('mongoose');
 
 async function getAllAppointments(){
     return await Appointment.find();
@@ -18,6 +19,15 @@ async function createAppointment(body){
     return createdAppointment;
 }
 
+async function deleteAppointment(id){
+    
+    await Appointment.deleteOne({_id: mongoose.Types.ObjectId(id.trim())}).exec()
+        .catch((err) => { success: false });
+    return {
+        success: true
+    };
+}
+
 function convertFromStringToDate(responseDate) {
     let dateComponents = responseDate.split('T');
     let datePieces = dateComponents[0].split("-");
@@ -26,4 +36,4 @@ function convertFromStringToDate(responseDate) {
                          timePieces[0], timePieces[1], timePieces[2]))
 }
 
-module.exports= {getAllAppointments, createAppointment};
+module.exports= {getAllAppointments, createAppointment, deleteAppointment};
