@@ -13,7 +13,7 @@ const UserSchema = new Schema({
         type: String,
         trim: true,
         required: 'El nombre es obligatorio',
-        min: [3, 'Nombre muy corto']
+        minlength: [3, 'El nombre es muy corto']
     },
     email: {
         type: String, 
@@ -33,7 +33,7 @@ const UserSchema = new Schema({
         type: String,
         trim: true,
         required: 'La contraseña es obligatoria',
-        min: [5, 'La contraseña es demasiado corta']
+        minlength: [5, 'La contraseña es demasiado corta']
     },
     role: {
         type: String,
