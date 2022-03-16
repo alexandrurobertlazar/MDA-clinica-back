@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 // Model
 const User = require('../model/User');
 
@@ -17,6 +19,7 @@ async function getUserById(userId) {
 }
 
 async function createUser(userData) {
+    userData.password = bcrypt.hashSync(userData.password, 8);
     const newUser = new User(userData);
 
     let validationError = newUser.validateSync();
