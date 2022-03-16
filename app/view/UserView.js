@@ -31,4 +31,15 @@ router.post('/', async (req, res) => {
     res.send(user);
 });
 
+// Update user
+router.put('/:userId', async (req, res) => {
+    const updatedUser = await UserController.updateUser(req.body, req.params.userId);
+    if(!updatedUser) {
+        res.status(422);
+        res.send({ error: "No se ha podido actualizar al usuario"} );
+    } else {
+        res.send(updatedUser);
+    }
+});
+
 module.exports = router;

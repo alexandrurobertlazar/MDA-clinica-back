@@ -35,4 +35,26 @@ async function createUser(userData) {
     return createdUser;
 }
 
-module.exports = { getAllUsers, getUserById, createUser };
+async function updateUser(userData, userId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(userId);
+
+        let user = new User({
+            _id: o_id,
+            ...userData
+        });
+
+        let validationError = user.validateSync();
+        if(validationError) {
+            return false;
+        }
+        
+        let updatedUser = await User.findOneAndUpdate({'_id': o_id}, user, {returnOriginal: false});
+        return updatedUser;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+module.exports = { getAllUsers, getUserById, createUser, updateUser };
