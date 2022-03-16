@@ -4,15 +4,25 @@ const bcrypt = require('bcrypt');
 // Model
 const User = require('../model/User');
 
+// Helper
+const { userHelper } = require('../helper/UserHelper');
+
 async function getAllUsers() {
-    return await User.find();
+    const usersList = await User.find();
+    
+    var users = [];
+    usersList.forEach(user => {
+        users.push(userHelper(user));
+    });
+
+    return users;
 }
 
 async function getUserById(userId) {
     try {
         let o_id = mongoose.Types.ObjectId(userId);
         const user = await User.findById(o_id).exec();
-        return user;
+        return userHelper(user);
     } catch (error) {
         return;
     }
@@ -35,7 +45,7 @@ async function createUser(userData) {
     }
 
     const createdUser = await User.findOne({email: userData.email}).exec();
-    return createdUser;
+    return userHelper(createdUser);
 }
 
 async function updateUser(userData, userId) {
@@ -53,7 +63,7 @@ async function updateUser(userData, userId) {
         }
         
         let updatedUser = await User.findOneAndUpdate({'_id': o_id}, user, {returnOriginal: false});
-        return updatedUser;
+        return userHelper(updatedUser);
     } catch (error) {
         console.log(error);
         return false;
