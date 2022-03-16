@@ -42,4 +42,15 @@ router.put('/:userId', async (req, res) => {
     }
 });
 
+// Delete user
+router.delete('/:userId', async (req, res) => {
+    const removed = await UserController.deleteUser(req.params.userId);
+    if(removed) {
+        res.send({"removed": true});
+    } else {
+        res.status(404);
+        res.send({"error": "No se ha eliminado al usuario"});
+    }
+});
+
 module.exports = router;

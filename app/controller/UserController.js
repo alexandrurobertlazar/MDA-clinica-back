@@ -57,4 +57,15 @@ async function updateUser(userData, userId) {
     }
 }
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser };
+async function deleteUser(userId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(userId);
+        let removed = await User.findByIdAndDelete(o_id);
+        return (removed !== null);
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
