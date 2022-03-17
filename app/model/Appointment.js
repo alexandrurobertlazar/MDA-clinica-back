@@ -1,12 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const Citas = {
-    "analitica" : "Analítica",
-    "enfermeria" : "Enfermería",
-    "citaG" : "Cita con médico"
-};
 
+//esperar al CRUD de usuarios para cambiar las String de paciente 
+//y especialista por ids de usuarios del sistema
 const AppointmentSchema = new Schema({
     title: {
         type : String,
@@ -23,7 +20,5 @@ const AppointmentSchema = new Schema({
 });
 
 const Appointment = mongoose.model('Appointment', AppointmentSchema);
-
-
 
 module.exports = Appointment;
