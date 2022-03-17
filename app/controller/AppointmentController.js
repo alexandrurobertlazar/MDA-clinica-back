@@ -1,5 +1,6 @@
 //Model
 const Appointment = require('../model/Appointment');
+const App_Usr = require('../model/App_Usr');
 const mongoose = require('mongoose');
 
 const { appointmentHelper } = require('../helper/AppointmentHelper');
