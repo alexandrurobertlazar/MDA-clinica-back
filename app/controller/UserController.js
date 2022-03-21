@@ -65,7 +65,6 @@ async function updateUser(userData, userId) {
         let updatedUser = await User.findOneAndUpdate({'_id': o_id}, user, {returnOriginal: false});
         return userHelper(updatedUser);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
@@ -76,7 +75,6 @@ async function deleteUser(userId) {
         let removed = await User.findByIdAndDelete(o_id);
         return (removed !== null);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
