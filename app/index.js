@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // DB Config
 //Set up default mongoose connection
@@ -14,6 +15,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // Server config
 const app = express();
 const port = 3000;
+
+// CORS
+app.use(cors())
 
 // Views
 const users = require('./view/UserView');
