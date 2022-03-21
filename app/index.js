@@ -15,6 +15,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const app = express();
 const port = 3000;
 
+// Views
+const users = require('./view/UserView');
+app.use('/users', users);
+
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
