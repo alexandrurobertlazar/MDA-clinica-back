@@ -51,7 +51,8 @@ async function createUser(userData) {
 async function updateUser(userData, userId) {
     try {
         let o_id = mongoose.Types.ObjectId(userId);
-
+        
+        userData.password = bcrypt.hashSync(userData.password, 8);
         let user = new User({
             _id: o_id,
             ...userData
