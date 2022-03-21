@@ -38,8 +38,6 @@ async function getAllAppointmentsByEspId(id){
     return apps;
 }
 
-//Cuando se complete la historia de CRUD de usuarios se deberá guardar el ID del paciente y no el nombre
-//tanto en el Schema de Appointment como en el de App_usr
 //PROBLEMA: con la fecha que se pone en la base de datos
 async function createAppointment(body){
 
