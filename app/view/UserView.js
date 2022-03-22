@@ -18,8 +18,20 @@ router.get('/:userId', async (req, res) => {
     if(!user) {
         res.status(404);
         res.send({"error": "No se ha podido encontrar al usuario"})
+    } else {
+        res.send(user);
     }
-    res.send(user);
+});
+
+// Login user
+router.post('/login', async (req, res) => {
+    const user = await UserController.loginUser(req.body);
+    if(!user) {
+        res.status(404);
+        res.send({"error": "No se ha encontrado al usuario"});
+    } else {
+        res.send(user);
+    }
 });
 
 // Create user
