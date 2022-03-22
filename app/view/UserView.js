@@ -12,6 +12,16 @@ router.get('/', async (req, res) => {
     res.send(users);
 });
 
+//Get user by role
+router.get('/role/:role', async (req, res) =>{
+    const users = await UserController.getUserByRole(req.params.role);
+    if(!users){
+        res.status(404);
+        res.send({"error": "No se ha podido encontrar al usuario por rol"})
+    }
+    res.send(users);
+});
+
 // Get user by id
 router.get('/:userId', async (req, res) => {
     const user = await UserController.getUserById(req.params.userId);
