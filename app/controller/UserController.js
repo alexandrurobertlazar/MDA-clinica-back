@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 // Model
 const User = require('../model/User');
@@ -28,8 +28,29 @@ async function getUserById(userId) {
     }
 }
 
+
+async function loginUser(userData) {
+    try {
+        userData.password = crypto.createHash('sha512').update(userData.password).digest('hex');
+        const foundUser = await User.find({"email": userData.email}).exec();
+        if(foundUser) {
+            const user = foundUser[0]
+            if(user.password === userData.password) {
+                return {
+                    "id": user._id,
+                    "role": user.role
+                }
+            }
+        }
+        return false;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
 async function createUser(userData) {
-    userData.password = bcrypt.hashSync(userData.password, 8);
+    userData.password = crypto.createHash('sha512').update(userData.password).digest('hex');
     const newUser = new User(userData);
 
     let validationError = newUser.validateSync();
@@ -50,6 +71,7 @@ async function createUser(userData) {
 
 async function updateUser(userData, userId) {
     try {
+        userData.password = crypto.createHash('sha512').update(userData.password).digest('hex');
         let o_id = mongoose.Types.ObjectId(userId);
 
         let user = new User({
@@ -79,4 +101,4 @@ async function deleteUser(userId) {
     }
 }
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, createUser, loginUser, updateUser, deleteUser };
