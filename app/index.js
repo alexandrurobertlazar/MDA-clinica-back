@@ -22,6 +22,9 @@ app.use(cors())
 // Views
 const users = require('./view/UserView');
 app.use('/users', users);
+//Views
+const appointments = require('./view/AppointmentsView');
+app.use('/appointments', appointments)
 
 app.get('/', (req, res) => {
     res.send('Hello world!');

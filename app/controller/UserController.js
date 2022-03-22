@@ -48,6 +48,22 @@ async function loginUser(userData) {
         return false;
     }
 }
+async function getUserByRole(role){
+    try {
+        let filter = {"role": role};
+        const users = await User.find(filter);
+
+        var user_by_role = [];
+        users.forEach(user => {
+            user_by_role.push(userHelper(user));
+        });
+
+        return user_by_role;
+    } catch (error) {
+        return;
+    }
+
+}
 
 async function createUser(userData) {
     userData.password = crypto.createHash('sha512').update(userData.password).digest('hex');
@@ -102,4 +118,4 @@ async function deleteUser(userId) {
     }
 }
 
-module.exports = { getAllUsers, getUserById, createUser, loginUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, getUserByRole, createUser, updateUser, deleteUser, loginUser};
