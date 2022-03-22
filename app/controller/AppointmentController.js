@@ -70,7 +70,7 @@ async function updateAppointment(body, id){
         title: body.title,
         pacient: body.pacient,
         especialist: body.especialist,
-        date: convertFromStringToDate(body.date),
+        date: body.date,
         desc: body.desc
     });
     let updatedAppointment = await Appointment.findOneAndUpdate({_id: o_id}, req, {new: true});
