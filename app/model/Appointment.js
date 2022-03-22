@@ -58,7 +58,8 @@ const AppointmentSchema = new Schema({
     },
     date: {
         type : Date,
-        validate: [validateDate, "Fecha incorrecta"]
+        validate: [validateDate, "Fecha incorrecta"],
+        required: 'La fecha es obligatoria'
     },
     desc: {
         type : String,
