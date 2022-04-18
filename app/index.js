@@ -25,6 +25,9 @@ app.use('/users', users);
 //Views
 const appointments = require('./view/AppointmentsView');
 app.use('/appointments', appointments)
+//Views
+const treatments = require('./view/TreatmentView');
+app.use('/treatments', treatments);
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
