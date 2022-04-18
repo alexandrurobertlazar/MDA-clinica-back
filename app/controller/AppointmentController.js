@@ -87,8 +87,8 @@ async function updateAppointment(body, id){
         const req = new Appointment({
             _id: o_id,
             title: body.title,
-            pacient: body.pacient,
-            especialist: body.especialist,
+            patient: body.patient,
+            specialist: body.specalist,
             date: body.date,
             desc: body.desc
         });

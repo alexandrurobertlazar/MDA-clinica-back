@@ -12,10 +12,10 @@ const validateDate = function(date){
     }
 }
 
-const validatePacient = async function(pacient){
-    const pacientValidate = await UserController.getUserById(pacient);
-    if(pacientValidate){
-        if(pacientValidate.role === "patient" ){
+const validatePatient = async function(patient){
+    const patientValidate = await UserController.getUserById(patient);
+    if(patientValidate){
+        if(patientValidate.role === "patient" ){
             return true;
         } 
         return false;
@@ -24,10 +24,10 @@ const validatePacient = async function(pacient){
     }
 }
 
-const validateEspecialist = async function(especialist){
-    const especialistValidate = await UserController.getUserById(especialist);
-    if(especialistValidate){
-        if(especialistValidate.role === "specialist" ){
+const validateSpecialist = async function(specialist){
+    const specialistValidate = await UserController.getUserById(specialist);
+    if(specialistValidate){
+        if(specialistValidate.role === "specialist" ){
             return true;
         } 
         return false;
@@ -49,12 +49,12 @@ const AppointmentSchema = new Schema({
     patient: {
         type: String,
         required: "El paciente es obligatorio",
-        validate: [validatePacient, "No existe este paciente"]
+        validate: [validatePatient, "No existe este paciente"]
     },
     specialist: {
         type: String,
         required: "El especialista es obligatorio",
-        validate: [validateEspecialist, "No existe este especialista"]
+        validate: [validateSpecialist, "No existe este especialista"]
     },
     date: {
         type : Date,
