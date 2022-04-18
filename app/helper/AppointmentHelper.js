@@ -2,8 +2,8 @@ function appointmentHelper(appointment) {
     return {
         "id": appointment._id,
         "title": appointment.title,
-        "pacient": appointment.pacient,
-        "especialist": appointment.especialist,
+        "patient": appointment.patient,
+        "specialist": appointment.specialist,
         "date": appointment.date,
         "desc": appointment.desc
     }

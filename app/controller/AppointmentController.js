@@ -31,7 +31,7 @@ async function getAllAppointments(){
 async function getAllAppointmentsByPacId(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
-        let filter = {"pacient": o_id};
+        let filter = {"patient": o_id};
 
         const appointment_list = await Appointment.find(filter);
         
@@ -48,7 +48,7 @@ async function getAllAppointmentsByPacId(id){
 async function getAllAppointmentsByEspId(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
-        let filter = {"especialist": o_id};
+        let filter = {"specialist": o_id};
     
         const appointment_list = await Appointment.find(filter);
         var apps = [];
