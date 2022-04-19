@@ -5,6 +5,7 @@ function appointmentHelper(appointment) {
         "patient": appointment.patient,
         "specialist": appointment.specialist,
         "date": appointment.date,
+        "hour": appointment.hour,
         "desc": appointment.desc
     }
 }
