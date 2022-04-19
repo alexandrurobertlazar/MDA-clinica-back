@@ -4,6 +4,27 @@ const mongoose = require('mongoose');
 
 const { appointmentHelper } = require('../helper/AppointmentHelper');
 
+const appointmentsHours = setHours();
+
+async function setHours(){
+    let hoursArray = [];
+    let hours=8;
+    let minutes = 0;
+    for(let i=0; i<53; i++){
+        if(minutes==0){
+            hoursArray[i]=hours+":00";
+        } else{
+            hoursArray[i]=hours+":"+minutes;
+        }
+        minutes+=15;
+        if(minutes==60){
+            hours++;
+            minutes=0;
+        }
+    }
+    return hoursArray;
+}
+
 async function getAppointmentById(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
@@ -31,7 +52,7 @@ async function getAllAppointments(){
 async function getAllAppointmentsByPacId(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
-        let filter = {"pacient": o_id};
+        let filter = {"patient": o_id};
 
         const appointment_list = await Appointment.find(filter);
         
@@ -48,7 +69,7 @@ async function getAllAppointmentsByPacId(id){
 async function getAllAppointmentsByEspId(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
-        let filter = {"especialist": o_id};
+        let filter = {"specialist": o_id};
     
         const appointment_list = await Appointment.find(filter);
         var apps = [];
@@ -61,21 +82,20 @@ async function getAllAppointmentsByEspId(id){
     }
 }
 
-//PROBLEMA: con la fecha que se pone en la base de datos
 async function createAppointment(body){
     try {
         const req = new Appointment(body);
-        req['date'] = new Date(body.date);
     
         let validationError = req.validateSync();
         if (validationError){
             return {"validationError" : validationError};
         }
-    
+        
         let id = await req.save();
         const createdAppointment = await Appointment.findById({_id: String(id['_id'])}).exec();
         return appointmentHelper(createdAppointment);
     } catch (error) {
+        console.log(error);
         return false;
     }
 }
@@ -83,13 +103,13 @@ async function createAppointment(body){
 async function updateAppointment(body, id){
     try {
         let o_id= mongoose.Types.ObjectId(id.trim());
-
         const req = new Appointment({
             _id: o_id,
             title: body.title,
-            pacient: body.pacient,
-            especialist: body.especialist,
+            patient: body.patient,
+            specialist: body.specialist,
             date: body.date,
+            hour: body.hour,
             desc: body.desc
         });
         let updatedAppointment = await Appointment.findOneAndUpdate({_id: o_id}, req, {new: true});
@@ -109,5 +129,20 @@ async function deleteAppointment(id){
     }
 }
 
+async function getAvailableHour(specialist, date){
+    try{
+        let appointmentsRaw = await getAllAppointmentsByEspId(specialist);
+        let availableHours = await setHours();
+        appointmentsRaw.forEach(app => {
+            if(app.date === date){
+                availableHours = availableHours.filter(i => i != app.hour);
+            }
+        });
+        return availableHours;
+    } catch(error){
+        return false;
+    }
+}
+
 module.exports= {getAllAppointments, getAppointmentById, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
-    updateAppointment, deleteAppointment};
+    updateAppointment, deleteAppointment, getAvailableHour};
