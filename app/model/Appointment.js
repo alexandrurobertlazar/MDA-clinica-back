@@ -12,10 +12,16 @@ const validateDate = function(date){
     }
 }
 
+const validateHour = async function(hourData){
+    const [hour, min] = hourData.split(':');
+    return ((parseInt(hour)>=8 && parseInt(hour)<=21) && (min==="00" || min==="15" || min==="30" || min==="45"));
+}
+
+
 const validatePacient = async function(pacient){
     const pacientValidate = await UserController.getUserById(pacient);
     if(pacientValidate){
-        if(pacientValidate.role === "paciente" ){
+        if(pacientValidate.role === "patient" ){
             return true;
         } 
         return false;
@@ -24,10 +30,10 @@ const validatePacient = async function(pacient){
     }
 }
 
-const validateEspecialist = async function(especialist){
-    const especialistValidate = await UserController.getUserById(especialist);
+const validateEspecialist = async function(specialist){
+    const especialistValidate = await UserController.getUserById(specialist);
     if(especialistValidate){
-        if(especialistValidate.role === "especialista" ){
+        if(especialistValidate.role === "specialist" ){
             return true;
         } 
         return false;
@@ -35,6 +41,7 @@ const validateEspecialist = async function(especialist){
         return false;
     }
 }
+
 
 const AppointmentSchema = new Schema({
     title: {
@@ -46,20 +53,25 @@ const AppointmentSchema = new Schema({
         ],
         required: "El tipo de cita es obligatorio"
     },
-    pacient: {
+    patient: {
         type: String,
         required: "El paciente es obligatorio",
         validate: [validatePacient, "No existe este paciente"]
     },
-    especialist: {
+    specialist: {
         type: String,
         required: "El especialista es obligatorio",
         validate: [validateEspecialist, "No existe este especialista"]
     },
     date: {
-        type : Date,
+        type : String,
         validate: [validateDate, "Fecha incorrecta"],
         required: 'La fecha es obligatoria'
+    },
+    hour:{
+        type: String,
+        validate: [validateHour, "Hora incorrecta"],
+        required: 'La hora es obligatoria'
     },
     desc: {
         type : String,

@@ -12,6 +12,11 @@ router.get('/', async (req, res)=>{
     res.send(appointments);
 });
 
+router.get('/:speId&:date', async (req, res)=>{
+    const hours = await AppointmentController.getAvailableHour(req.params.speId, req.params.date);
+    res.send(hours)
+})
+
 router.get('/:id', async (req, res) =>{
     const appointment = await AppointmentController.getAppointmentById(req.params.id);
     res.send(appointment);
@@ -41,4 +46,7 @@ router.delete('/:userId', async (req, res) =>{
     const deleteAppointment= await AppointmentController.deleteAppointment(req.params.userId);
     res.send(deleteAppointment)
 })
+
+
+
 module.exports = router;
