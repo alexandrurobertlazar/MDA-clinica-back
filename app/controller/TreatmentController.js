@@ -13,7 +13,6 @@ async function getAllTreatments() {
     treatmentList.forEach(treatment => {
         treatments.push(treatmentHelper(treatment));
     });
-    console.log(treatments);
     return treatments;
 }
 
@@ -21,7 +20,6 @@ async function createTreatment(treatmentData) {
 
     try {
         const req = new Treatment(treatmentData);
-        
     
         let validationError = req.validateSync();
         if (validationError){
@@ -32,6 +30,7 @@ async function createTreatment(treatmentData) {
         const createTreatment = await Treatment.findById({_id: String(id['_id'])}).exec();
         return treatmentHelper(createTreatment);
     } catch (error) {
+        console.log(error);
         return false;
     }
 }

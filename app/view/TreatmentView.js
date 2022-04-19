@@ -12,4 +12,9 @@ router.get('/', async (req, res) => {
     res.send(treatments);
 });
 
+router.post('/', async (req, res) =>{
+    const treatment = await TreatmentController.createTreatment(req.body);
+    res.send(treatment);
+});
+
 module.exports = router;

@@ -34,37 +34,31 @@ const TreatmentSchema = new Schema({
         required: 'El paciente es obligatorio',
         validate: [validatePatient, "No existe este paciente"]
     },
-
-    treatment: [
-        {
-            id_specialist: {
-                type: String,
-                required: 'El especialista es obligatorio',
-                validate: [validateSpecialist, "No existe este especialista"]
+    
+    id_specialist: {
+        type: String,
+        required: 'El especialista es obligatorio',
+        validate: [validateSpecialist, "No existe este especialista"]
                 
-            }
-        }, 
+    },
 
-        {
-            subject: {
-                type: String,
-                trim: true,
-                required: 'El asunto es obligatorio',
-                minlength: [5, 'El asunto es muy corto'],
-                maxlength: [20, 'El asunto es demasiado largo'],
-            }
-        },
+    subject: {
+        type: String,
+        trim: true,
+        required: 'El asunto es obligatorio',
+        minlength: [5, 'El asunto es muy corto'],
+        maxlength: [20, 'El asunto es demasiado largo'],
+    },
+     
+    description: {
+        type: String,
+        trim: true,
+        required: 'La descripción es obligatoria',
+        minlength: [10, 'La descripción es muy corta'],
+        maxlength: [50, 'La descripción es demasiada larga'],
+    }
+      
 
-        {
-            description: {
-                type: String,
-                trim: true,
-                required: 'La descripción es obligatoria',
-                minlength: [10, 'La descripción es muy corta'],
-                maxlength: [50, 'La descripción es demasiada larga'],
-            }
-        },
-    ]
 });
 
 const Treatment = mongoose.model('Treatment', TreatmentSchema);
