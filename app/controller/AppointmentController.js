@@ -103,7 +103,6 @@ async function createAppointment(body){
 async function updateAppointment(body, id){
     try {
         let o_id= mongoose.Types.ObjectId(id.trim());
-        console.log(body.hour);
         const req = new Appointment({
             _id: o_id,
             title: body.title,
