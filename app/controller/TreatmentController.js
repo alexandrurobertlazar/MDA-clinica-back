@@ -17,6 +17,27 @@ async function getAllTreatments() {
     return treatments;
 }
 
+async function getTreatmentById(id) {
+    try {
+        let o_id = mongoose.Types.ObjectId(id);
+        const treatment = await Treatment.findById(o_id).exec();
+        console.log(treatment);
+        return treatmentHelper(treatment);
+    } catch (error) {
+        console.log("OLA");
+        return;
+    }
+}
+
+async function getTreatmentPatient(id_patient) {
+    try {
+        const treatment = await Treatment.find({"id_patient": id_patient}).exec();
+        return treatment;
+    } catch (error) {
+        return;
+    }
+}
+
 async function createTreatment(treatmentData) {
 
     try {
@@ -36,4 +57,23 @@ async function createTreatment(treatmentData) {
     }
 }
 
-module.exports = { getAllTreatments, createTreatment};
+async function updateTreatment(treatmentData, treatmentId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(treatmentId);
+        let treatment = new Treatment({
+            _id: o_id,
+            ...treatmentData
+        });
+
+        let validationError = treatment.validateSync();
+        if(validationError) {
+            return false;
+        }
+        let updatedTreatment = await Treatment.findOneAndUpdate({'_id': o_id}, treatment, {returnOriginal: false});
+        return treatmentHelper(updatedTreatment);
+    } catch (error) {
+        return false;
+    }
+}
+
+module.exports = { getAllTreatments, createTreatment, getTreatmentPatient, getTreatmentById, updateTreatment};
