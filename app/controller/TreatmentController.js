@@ -13,6 +13,7 @@ async function getAllTreatments() {
     treatmentList.forEach(treatment => {
         treatments.push(treatmentHelper(treatment));
     });
+    
     return treatments;
 }
 
