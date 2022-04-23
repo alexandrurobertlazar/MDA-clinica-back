@@ -56,12 +56,12 @@ const AppointmentSchema = new Schema({
     patient: {
         type: String,
         required: "El paciente es obligatorio",
-        validate: [validatePatient, "No existe este paciente"]
+        validate: [validatePacient, "No existe este paciente"]
     },
     specialist: {
         type: String,
         required: "El especialista es obligatorio",
-        validate: [validateSpecialist, "No existe este especialista"]
+        validate: [validateEspecialist, "No existe este especialista"]
     },
     date: {
         type : String,

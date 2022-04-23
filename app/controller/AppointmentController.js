@@ -159,5 +159,5 @@ async function getAvailableHourPatient(patient, date){
     }
 }
 
-module.exports= { getAllAppointments, getAppointmentById, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
+module.exports= {getAllAppointments, getAppointmentById, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
     updateAppointment, deleteAppointment, getAvailableHour, getAvailableHourPatient };
