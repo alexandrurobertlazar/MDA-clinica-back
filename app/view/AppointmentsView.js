@@ -22,6 +22,11 @@ router.get('/:id', async (req, res) =>{
     res.send(appointment);
 });
 
+router.get('/patient/:patId&:date', async (req, res)=>{
+    const hours = await AppointmentController.getAvailableHourPatient(req.params.patId, req.params.date);
+    res.send(hours)
+});
+
 router.get('/usr/:userId', async (req, res)=>{
     const appointments = await AppointmentController.getAllAppointmentsByPacId(req.params.userId);
     res.send(appointments);
