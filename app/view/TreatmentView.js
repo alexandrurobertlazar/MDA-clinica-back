@@ -51,4 +51,15 @@ router.put('/:treatmentId', async (req, res) => {
     }
 });
 
+// Delete treatment
+router.delete('/:treatmentId', async (req, res) => {
+    const removed = await TreatmentController.deleteTreatment(req.params.treatmentId);
+    if(removed) {
+        res.send({"removed": true});
+    } else {
+        res.status(404);
+        res.send({"error": "No se ha eliminado el tratamiento"});
+    }
+});
+
 module.exports = router;

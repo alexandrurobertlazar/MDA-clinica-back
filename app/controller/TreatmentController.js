@@ -12,8 +12,7 @@ async function getAllTreatments() {
     var treatments = [];
     treatmentList.forEach(treatment => {
         treatments.push(treatmentHelper(treatment));
-    });
-    
+    }); 
     return treatments;
 }
 
@@ -21,10 +20,8 @@ async function getTreatmentById(id) {
     try {
         let o_id = mongoose.Types.ObjectId(id);
         const treatment = await Treatment.findById(o_id).exec();
-        console.log(treatment);
         return treatmentHelper(treatment);
     } catch (error) {
-        console.log("OLA");
         return;
     }
 }
@@ -52,7 +49,6 @@ async function createTreatment(treatmentData) {
         const createTreatment = await Treatment.findById({_id: String(id['_id'])}).exec();
         return treatmentHelper(createTreatment);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
@@ -76,4 +72,14 @@ async function updateTreatment(treatmentData, treatmentId) {
     }
 }
 
-module.exports = { getAllTreatments, createTreatment, getTreatmentPatient, getTreatmentById, updateTreatment};
+async function deleteTreatment(treatmentId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(treatmentId);
+        let removed = await Treatment.findByIdAndDelete(o_id);
+        return (removed !== null);
+    } catch (error) {
+        return false;
+    }
+}
+
+module.exports = { getAllTreatments, createTreatment, getTreatmentPatient, getTreatmentById, updateTreatment, deleteTreatment};
