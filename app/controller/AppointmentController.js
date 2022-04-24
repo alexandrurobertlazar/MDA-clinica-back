@@ -144,5 +144,20 @@ async function getAvailableHour(specialist, date){
     }
 }
 
+async function getAvailableHourPatient(patient, date){
+    try {
+        let appointmentsRaw = await getAllAppointmentsByPacId(patient);
+        let availableHours = await setHours();
+        appointmentsRaw.forEach(app => {
+            if(app.date === date){
+                availableHours = availableHours.filter(i => i != app.hour);
+            }
+        });
+        return availableHours;
+    } catch(error) {
+        return false;
+    }
+}
+
 module.exports= {getAllAppointments, getAppointmentById, getAllAppointmentsByPacId, getAllAppointmentsByEspId, createAppointment, 
-    updateAppointment, deleteAppointment, getAvailableHour};
+    updateAppointment, deleteAppointment, getAvailableHour, getAvailableHourPatient };
