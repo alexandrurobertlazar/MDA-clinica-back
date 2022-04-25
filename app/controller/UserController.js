@@ -89,19 +89,19 @@ async function updateUser(userData, userId) {
     try {
         userData.password = crypto.createHash('sha512').update(userData.password).digest('hex');
         let o_id = mongoose.Types.ObjectId(userId);
-        
-        userData.password = bcrypt.hashSync(userData.password, 8);
         let user = new User({
             _id: o_id,
             ...userData
         });
         let validationError = user.validateSync();
         if(validationError) {
+            console.log("error");
             return false;
         }
         let updatedUser = await User.findOneAndUpdate({'_id': o_id}, user, {returnOriginal: false});
         return userHelper(updatedUser);
     } catch (error) {
+        console.log("Exception");
         return false;
     }
 }
