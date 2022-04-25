@@ -95,13 +95,11 @@ async function updateUser(userData, userId) {
         });
         let validationError = user.validateSync();
         if(validationError) {
-            console.log("error");
             return false;
         }
         let updatedUser = await User.findOneAndUpdate({'_id': o_id}, user, {returnOriginal: false});
         return userHelper(updatedUser);
     } catch (error) {
-        console.log("Exception");
         return false;
     }
 }
