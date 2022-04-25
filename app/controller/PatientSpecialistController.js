@@ -35,7 +35,6 @@ async function createPatientSpecialist(patientSpecialistData) {
         const createPatientSpecialist = await PatientSpecialist.findById({_id: String(id['_id'])}).exec();
         return patientSpecialistHelper(createPatientSpecialist);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
