@@ -95,7 +95,7 @@ async function createAppointment(body){
         const createdAppointment = await Appointment.findById({_id: String(id['_id'])}).exec();
         return appointmentHelper(createdAppointment);
     } catch (error) {
-        console.log(error);
+        
         return false;
     }
 }

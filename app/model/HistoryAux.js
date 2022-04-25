@@ -18,7 +18,7 @@ const validatePatient = async function(patient){
 const validateSpecialist = async function(specialist){
     const specialistValidate = await UserController.getUserById(specialist);
     if(specialistValidate){
-        if(specialistValidate.role === "specialist" ){
+        if(specialistValidate.role === "specialist" || specialistValidate.role === "assistant"){
             return true;
         } 
         return false;
