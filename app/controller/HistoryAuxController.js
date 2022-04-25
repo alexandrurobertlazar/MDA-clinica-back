@@ -20,7 +20,7 @@ async function createHistory (historyData) {
         }
     
         let id = await req.save();
-        const createHistory = await Historyaux.findById({_id: String(id['_id'])}).exec();
+        const createHistory = await Historyaux.findById({_id: id['_id']}).exec();
         return historyAuxHelper(createHistory);
     } catch (error) {
         return false;
