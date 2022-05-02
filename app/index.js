@@ -34,6 +34,10 @@ app.use('/patientSpecialist', patientSpecialists);
 const history = require('./view/HistoryAuxView');
 app.use('/history', history);
 
+// Specialist request views
+const specialistRequest = require('./view/SpecialistRequestView');
+app.use('/requests', specialistRequest)
+
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
