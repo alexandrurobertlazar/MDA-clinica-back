@@ -37,4 +37,15 @@ router.post('/', async (req, res) =>{
     res.send(patientSpecialist);
 });
 
+// Specialsts assign on one patient
+router.get('/names', async (req, res) =>{
+    const patientSpecialist = await PatientSpecialistController.getName();
+    if(!patientSpecialist) {
+        res.status(404);
+        res.send({"error": "No se ha podido encontrar la asignación"})
+    } else {
+        res.send(patientSpecialist);
+    }
+});
+
 module.exports = router;

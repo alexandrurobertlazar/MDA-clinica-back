@@ -86,4 +86,34 @@ async function getMySpecialists(patient_id) {
     }
 }
 
-module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getMySpecialists };
+async function getName() {
+    try {
+        var relation = [];
+        const all = await getAllPatientSpecialist();
+        var patients = [];
+        for (patient of all) {
+            const name_pat = await UserController.getUserById(patient.id_patient);
+            patients.push(name_pat.name);
+        }
+        
+        var specialists = [];
+        for (specialist of all) {
+            const name_spec = await UserController.getUserById(specialist.id_specialist);
+            specialists.push(name_spec.name);
+        } 
+        
+        for(var i=0;i<patients.length;i++){
+            relation.push({"id_assign": `${all[i].id}`, "patients":`${patients[i]}`, "specialist":""});
+        }
+
+        for(var j=0;j<specialists.length;j++){
+            relation[j].specialist = specialists[j];
+        }
+
+        return relation;
+    } catch (error) {
+        return;
+    }
+}
+
+module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getName, getMySpecialists};
