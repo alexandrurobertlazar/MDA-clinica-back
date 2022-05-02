@@ -6,6 +6,7 @@ const Historyaux = require('../model/HistoryAux');
 // Helper
 const { historyAuxHelper} = require('../helper/HistoryAuxHelper');
 const HistoryAux = require('../model/HistoryAux');
+const UserController = require ('../model/User');
 
 
 // Create historial patients
@@ -48,6 +49,32 @@ async function getHistoryById(historyId) {
     }
 }
 
+// Get history by id_patient and get name of sanitary
+async function getName(id_patient) {
+    try {
+        var relation = [];
+        const historyPatient = await getHistoryByPatient(id_patient);
+      
+        var specialists = [];
+        for (specialist of historyPatient) {
+            const name_specialist = await UserController.getUserById(specialist.id_specialist);
+            specialists.push(name_specialist.name);
+        } 
+
+        for(all of historyPatient){
+            relation.push({"subject":`${all.subject}`, "description":`${all.description}`, "name": ""});
+        }
+
+        for(var j=0;j<specialists.length;j++){
+            relation[j].name = specialists[j];
+        }
+
+        return relation;
+    } catch (error) {
+        return;
+    }
+}
+
 // Update history
 async function updateHistory(historyData, historyId) {
     try {
@@ -70,4 +97,4 @@ async function updateHistory(historyData, historyId) {
     }
 }
 
-module.exports = { createHistory, getHistoryByPatient, getHistoryById, updateHistory };
+module.exports = { createHistory, getHistoryByPatient, getHistoryById, getName, updateHistory };
