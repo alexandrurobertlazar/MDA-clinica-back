@@ -25,6 +25,32 @@ async function setHours(){
     return hoursArray;
 }
 
+async function compareDates(dateA, dateB){
+    console.log(dateB);
+    var [year1, month1, day1] = dateA.split('-');
+    var dayA = parseInt(day1)
+    var monthA = parseInt(month1);
+    var yearA = parseInt(year1);
+    var [year2, month2, day2] = dateB.split('-');
+    var dayB = parseInt(day2)
+    var monthB = parseInt(month2);
+    var yearB = parseInt(year2);
+
+    if(yearA < yearB) return -1;
+    if(yearA > yearB) return 1;
+    if(yearA === yearB) {
+        if(monthA < monthB) return -1;
+        if(monthA > monthB) return 1;
+        if(monthA === monthB) {
+            if(dayA < dayB) return -1;
+            if(dayA > dayB) return 1;
+            if(dayA === dayB) { return 1;
+            }
+        };
+    };
+    return 0;
+}
+
 async function getAppointmentById(id){
     try {
         let o_id = mongoose.Types.ObjectId(id);
@@ -55,11 +81,24 @@ async function getAllAppointmentsByPacId(id){
         let filter = {"patient": o_id};
 
         const appointment_list = await Appointment.find(filter);
-        
         var apps = [];
-        appointment_list.forEach(app =>{
-            apps.push(appointmentHelper(app));
-        })
+
+        //Conseguir fecha de ayer
+        var today = new Date();
+        var yesterdayRaw = new Date(today);
+        yesterdayRaw.setDate(yesterdayRaw.getDate() - 1);
+        var yesterdayReverse = yesterdayRaw.toISOString().split('T')[0];
+        var [year, month, day] = yesterdayReverse.split("-");
+        var yesterday = day+"-"+month+"-"+year;
+
+        for(let app of appointment_list){
+            console.log(compareDates(yesterdayReverse, appointmentHelper(app).date));
+            if((await compareDates(yesterdayReverse, appointmentHelper(app).date)) == 1){
+                let res = await deleteAppointment(app._id.toString());
+            } else{
+                apps.push(appointmentHelper(app));
+            }
+        }
         return apps;
     } catch (error) {
         return false;
@@ -76,6 +115,8 @@ async function getAllAppointmentsByEspId(id){
         appointment_list.forEach(app =>{
             apps.push(appointmentHelper(app));
         })
+
+        
         return apps;   
     } catch (error) {
         return false;
@@ -125,6 +166,7 @@ async function deleteAppointment(id){
         let remove = await Appointment.findByIdAndDelete(o_id);
         return (remove !== null);
     } catch (error){
+        console.log(error);
         return false;   
     }
 }
