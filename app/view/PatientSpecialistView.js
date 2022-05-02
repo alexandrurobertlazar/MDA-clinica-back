@@ -18,6 +18,19 @@ router.get('/myPatients/:specialistId', async (req, res) => {
     res.send(patientSpecialists);
 });
 
+// Get all my specialists
+router.get('/mySpecialists/:patient_id', async (req, res) => {
+    const specialistList = await PatientSpecialistController.getMySpecialists(req.params.patient_id);
+    if(!specialistList) {
+        res.status(404);
+        res.send({
+            "error": "Algo ha ido mal, inténtelo más tarde"
+        })
+    } else {
+        res.send(specialistList);
+    }
+});
+
 // Create patientspecialist
 router.post('/', async (req, res) =>{
     const patientSpecialist = await PatientSpecialistController.createPatientSpecialist(req.body);
