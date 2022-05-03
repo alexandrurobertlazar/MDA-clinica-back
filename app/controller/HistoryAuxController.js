@@ -6,7 +6,7 @@ const Historyaux = require('../model/HistoryAux');
 // Helper
 const { historyAuxHelper} = require('../helper/HistoryAuxHelper');
 const HistoryAux = require('../model/HistoryAux');
-const UserController = require ('../model/User');
+const UserController = require ('../controller/UserController');
 
 
 // Create historial patients
