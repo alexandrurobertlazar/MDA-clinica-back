@@ -48,4 +48,27 @@ router.get('/names', async (req, res) =>{
     }
 });
 
+// Update assign
+router.put('/:assignId', async (req, res) => {
+    const updatedAssign = await PatientSpecialistController.updateAssign(req.body, req.params.assignId);
+    if(!updatedAssign) {
+        res.status(422);
+        res.send({ error: "No se ha podido actualizar la asignación"} );
+    } else {
+        res.send(updatedAssign);
+    }
+});
+
+// Delete assigns
+router.delete('/:assignId', async (req, res) => {
+    const removed = await PatientSpecialistController.deleteAssign(req.params.assignId);
+    if(removed) {
+        res.send({"removed": true});
+    } else {
+        res.status(404);
+        res.send({"error": "No se ha eliminado la asignación"});
+    }
+});
+
+
 module.exports = router;
