@@ -26,7 +26,6 @@ async function setHours(){
 }
 
 async function compareDates(dateA, dateB){
-    console.log(dateB);
     var [year1, month1, day1] = dateA.split('-');
     var dayA = parseInt(day1)
     var monthA = parseInt(month1);
@@ -92,7 +91,6 @@ async function getAllAppointmentsByPacId(id){
         var yesterday = day+"-"+month+"-"+year;
 
         for(let app of appointment_list){
-            console.log(compareDates(yesterdayReverse, appointmentHelper(app).date));
             if((await compareDates(yesterdayReverse, appointmentHelper(app).date)) == 1){
                 let res = await deleteAppointment(app._id.toString());
             } else{
