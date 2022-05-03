@@ -88,8 +88,10 @@ async function getMySpecialists(patient_id) {
 
 async function getName() {
     try {
+
         var relation = [];
         const all = await getAllPatientSpecialist();
+        
         var patients = [];
         for (patient of all) {
             const name_pat = await UserController.getUserById(patient.id_patient);
@@ -103,17 +105,46 @@ async function getName() {
         } 
         
         for(var i=0;i<patients.length;i++){
-            relation.push({"id_assign": `${all[i].id}`, "patients":`${patients[i]}`, "specialist":""});
+            relation.push({"id_assign": `${all[i].id}`,"id_patient":`${all[i].id_patient}`, "id_specialist":`${all[i].id_specialist}`, "patients":`${patients[i]}`, "specialist":""});
         }
 
         for(var j=0;j<specialists.length;j++){
             relation[j].specialist = specialists[j];
         }
-
+        
         return relation;
     } catch (error) {
         return;
     }
 }
 
-module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getName, getMySpecialists};
+async function updateAssign(assignData, assignId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(assignId);
+        let assign = new PatientSpecialist({
+            _id: o_id,
+            ...assignData
+        });
+
+        let validationError = assign.validateSync();
+        if(validationError) {
+            return false;
+        }
+        let updatedAssign = await PatientSpecialist.findOneAndUpdate({'_id': o_id}, assign, {returnOriginal: false});
+        return patientSpecialistHelper(updatedAssign);
+    } catch (error) {
+        return false;
+    }
+}
+
+async function deleteAssign(assignId) {
+    try {
+        let o_id = mongoose.Types.ObjectId(assignId);
+        let removed = await PatientSpecialist.findByIdAndDelete(o_id);
+        return (removed !== null);
+    } catch (error) {
+        return false;
+    }
+}
+
+module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getName, deleteAssign, updateAssign, getMySpecialists};
