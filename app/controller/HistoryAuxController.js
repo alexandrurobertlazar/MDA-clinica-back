@@ -8,7 +8,6 @@ const { historyAuxHelper} = require('../helper/HistoryAuxHelper');
 const HistoryAux = require('../model/HistoryAux');
 const UserController = require ('../controller/UserController');
 
-
 // Create historial patients
 async function createHistory (historyData) {
 
