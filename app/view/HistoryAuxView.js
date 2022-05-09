@@ -33,6 +33,17 @@ router.get('/historyind/:historyId', async (req, res) => {
     }
 });
 
+// Get history by id_patient and get name of sanitary
+router.get('/names/:id_patient', async (req, res) => {
+    const history = await HistoryAuxController.getName(req.params.id_patient);
+    if(!history) {
+        res.status(404);
+        res.send({"error": "No se ha podido encontrar el historial con nombre del sanitario"})
+    } else {
+        res.send(history);
+    }
+});
+
 // Update history
 router.put('/:historyId', async (req, res) => {
     const updatedHistory = await HistoryAuxController.updateHistory(req.body, req.params.historyId);
