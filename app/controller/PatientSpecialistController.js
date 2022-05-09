@@ -143,8 +143,26 @@ async function deleteAssign(assignId) {
         let removed = await PatientSpecialist.findByIdAndDelete(o_id);
         return (removed !== null);
     } catch (error) {
+        return false
+    }
+}
+
+async function deleteRelation(patient, specialist) {
+    try {
+        let o_patient = mongoose.Types.ObjectId(patient)
+        let o_specialist = mongoose.Types.ObjectId(specialist)
+        const removed = await PatientSpecialist.findOneAndDelete({
+            "id_patient": o_patient,
+            "id_specialist": o_specialist
+        }).exec();
+        if(removed) {
+            return true
+        } else {
+            return false
+        }
+    } catch(error) {
         return false;
     }
 }
 
-module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getName, deleteAssign, updateAssign, getMySpecialists};
+module.exports = { getAllPatientSpecialist, createPatientSpecialist, getMyPatients, getName, deleteAssign, updateAssign, getMySpecialists, deleteRelation };

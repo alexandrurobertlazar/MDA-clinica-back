@@ -13,6 +13,11 @@ const SpecialistRequestSchema = new Schema({
         trim: true,
         required: 'El id del especialista es obligatorio'
     },
+    old_specialist: {
+        type: String,
+        trim: true,
+        required: 'El id del antiguo especialista es obligatorio'
+    },
     reason: {
         type: String, 
         trim: true,
