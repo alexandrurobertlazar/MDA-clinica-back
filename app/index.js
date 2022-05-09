@@ -35,6 +35,8 @@ const history = require('./view/HistoryAuxView');
 app.use('/history', history);
 const analytics = require('./view/AnalyticsView');
 app.use('/analytics', analytics);
+const chats = require('./view/ChatsView');
+app.use('/chats', chats);
 
 
 // Specialist request views
