@@ -34,6 +34,31 @@ async function getAllUserRequest(patient_id) {
     }
 }
 
+// Get all specialist's change request
+async function getAllSpecialistRequest(specialist_id) {
+    try {
+        let o_id = mongoose.Types.ObjectId(specialist_id)
+        let filter = {"specialist_id": o_id}
+        const requests = await SpecialistRequest.find(filter).exec()
+
+        var list = []
+        if(requests.length > 0) {
+            let specialist = await User.findById(o_id);
+            for(let r of requests) {
+                let patient = await User.findById(mongoose.Types.ObjectId(r.patient_id)).exec();
+                if(specialist && patient) {
+                    list.push(specialistRequestHelper(userHelper(patient), userHelper(specialist), r));
+                }
+            }
+        } else {
+            return false;
+        }
+        return list;
+    } catch (error) {
+        return false;
+    }
+}
+
 async function getRequestById(request_id) {
     try {
         let o_id = mongoose.Types.ObjectId(request_id)
@@ -75,4 +100,4 @@ async function addNewRequest(request) {
     }
 }
 
-module.exports = { getAllUserRequest, getRequestById, addNewRequest }
+module.exports = { getAllUserRequest, getRequestById, addNewRequest, getAllSpecialistRequest }

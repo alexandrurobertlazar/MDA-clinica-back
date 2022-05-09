@@ -32,6 +32,19 @@ router.get('/patient/:patient_id', async (req, res) => {
     }
 });
 
+// Get all specialists requests
+router.get('/specialist/:specialist_id', async (req, res) => {
+    const requests = await SpecialistRequestController.getAllSpecialistRequest(req.params.specialist_id)
+    if(!requests) {
+        res.status(404)
+        res.send({
+            "error": "Algo ha salido mal, inténtelo de nuevo más tarde"
+        })
+    } else {
+        res.send(requests);
+    }
+})
+
 router.post("/", async (req, res) => {
     const request = await SpecialistRequestController.addNewRequest(req.body);
     if(!request) {
