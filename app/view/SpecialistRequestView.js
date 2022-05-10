@@ -75,7 +75,7 @@ router.post("/accept", async (req, res) => {
 })
 
 router.delete("/:request_id", async (req, res) => {
-    const removed = await SpecialistRequestController.delteRequest(req.params.request_id);
+    const removed = await SpecialistRequestController.deleteRequest(req.params.request_id);
     if(!removed) {
         res.status(422)
         res.send({

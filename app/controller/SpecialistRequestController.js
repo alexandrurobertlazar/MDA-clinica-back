@@ -131,7 +131,7 @@ async function acceptRequest(request_id) {
     return false
 }
 
-async function delteRequest(request_id) {
+async function deleteRequest(request_id) {
     try {
         let o_id = mongoose.Types.ObjectId(request_id)
         const removed = await SpecialistRequest.findByIdAndRemove(o_id)
@@ -144,4 +144,4 @@ async function delteRequest(request_id) {
     }
 }
 
-module.exports = { getAllUserRequest, getRequestById, addNewRequest, getAllSpecialistRequest, acceptRequest, delteRequest }
+module.exports = { getAllUserRequest, getRequestById, addNewRequest, getAllSpecialistRequest, acceptRequest, deleteRequest }
