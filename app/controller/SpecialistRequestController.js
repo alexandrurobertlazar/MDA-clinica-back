@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 // Model
 const SpecialistRequest = require('../model/SpecialistRequest');
-const User = require('../model/User');
 
 // Helper
 const { specialistRequestHelper } = require('../helper/SpecialistRequestHelper');
-const { userHelper } = require('../helper/UserHelper');
+const { createPatientSpecialist, deleteRelation } = require('./PatientSpecialistController');
+const { getUserById } = require('./UserController');
 
 
 // Get all patient's specialist change request
@@ -18,11 +18,38 @@ async function getAllUserRequest(patient_id) {
 
         var list = []
         if(requests.length > 0) {
-            let patient = await User.findById(o_id);
+            let patient = await getUserById(o_id)
             for(let r of requests) {
-                let specialist = await User.findById(mongoose.Types.ObjectId(r.specialist_id)).exec();
-                if(specialist && patient) {
-                    list.push(specialistRequestHelper(userHelper(patient), userHelper(specialist), r));
+                let specialist = await getUserById(r.specialist_id);
+                let old_specialist = await getUserById(r.old_specialist);
+                if(old_specialist && specialist && patient) {
+                    list.push(specialistRequestHelper(patient, specialist, old_specialist, r));
+                }
+            }
+        } else {
+            return false;
+        }
+        return list;
+    } catch (error) {
+        return false;
+    }
+}
+
+// Get all specialist's change request
+async function getAllSpecialistRequest(specialist_id) {
+    try {
+        let o_id = mongoose.Types.ObjectId(specialist_id)
+        let filter = {"specialist_id": o_id}
+        const requests = await SpecialistRequest.find(filter).exec()
+
+        var list = []
+        if(requests.length > 0) {
+            let specialist = await getUserById(o_id);
+            for(let r of requests) {
+                let patient = await getUserById(r.patient_id)
+                let old_specialist = await getUserById(r.old_specialist);
+                if(old_specialist && specialist && patient) {
+                    list.push(specialistRequestHelper(patient, specialist, old_specialist, r));
                 }
             }
         } else {
@@ -39,10 +66,11 @@ async function getRequestById(request_id) {
         let o_id = mongoose.Types.ObjectId(request_id)
         const request = await SpecialistRequest.findById(o_id).exec()
         if(request) {
-            let specialist = await User.findById(mongoose.Types.ObjectId(request.specialist_id)).exec()
-            let patient = await User.findById(mongoose.Types.ObjectId(request.patient_id)).exec()
-            if(patient && specialist) {
-                return specialistRequestHelper(userHelper(patient), userHelper(specialist), request);
+            let specialist = await getUserById(request.specialist_id)
+            let patient = await getUserById(request.patient_id)
+            let old_specialist = await getUserById(request.old_specialist)
+            if(patient && specialist && old_specialist) {
+                    return specialistRequestHelper(patient, specialist, old_specialist, request)
             }
         } else {
             return false;
@@ -75,4 +103,45 @@ async function addNewRequest(request) {
     }
 }
 
-module.exports = { getAllUserRequest, getRequestById, addNewRequest }
+async function acceptRequest(request_id) {
+    try {
+        let o_id = mongoose.Types.ObjectId(request_id)
+        const request = await SpecialistRequest.findById(o_id)
+        if(request) {
+            const relation = {
+                id_patient: request.patient_id,
+                id_specialist: request.specialist_id
+            }
+            const created = await createPatientSpecialist(relation);
+            if(created) {
+                const removed = await deleteRelation(relation.id_patient, request.old_specialist);
+                if(removed) {
+                    const requestRemoved = await SpecialistRequest.findOneAndDelete({"_id": o_id})
+                    return true;
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+    } catch(error) {
+        return false
+    }
+    return false
+}
+
+async function deleteRequest(request_id) {
+    try {
+        let o_id = mongoose.Types.ObjectId(request_id)
+        const removed = await SpecialistRequest.findByIdAndRemove(o_id)
+        if(removed) {
+            return true
+        } 
+        return false
+    } catch(error) {
+        return false
+    }
+}
+
+module.exports = { getAllUserRequest, getRequestById, addNewRequest, getAllSpecialistRequest, acceptRequest, deleteRequest }
